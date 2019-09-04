@@ -1,5 +1,6 @@
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.util.parse import extract_datetime
 from .utils import get_request_json
 
 class InflacaoSkill(MycroftSkill):
@@ -32,6 +33,14 @@ class InflacaoSkill(MycroftSkill):
                         + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
 
         self.speak(speech_text)
+
+    @intent_handler(IntentBuilder('MensalIntent').require('ipca'))
+    def handle_mensal_intent(self, message):
+        utt = message.data.get('utterance').lower()
+        when = extract_datetime(utt)
+
+        self.speak('when', str(when))
+
 
 def create_skill():
     return InflacaoSkill()
