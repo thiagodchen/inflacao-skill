@@ -2,6 +2,7 @@ from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.parse import extract_datetime
 from .utils import get_request_json
+from mycroft.util.log import LOG
 
 class InflacaoSkill(MycroftSkill):
 
@@ -13,7 +14,7 @@ class InflacaoSkill(MycroftSkill):
 
     @intent_handler(IntentBuilder('LaunchIntent').require('launch'))
     def handle_launch_intent(self, message):
-        # LOG.debug(message)
+        LOG.debug('==== entered LOG ====')
         self.speak_dialog('launch')
 
 
@@ -40,6 +41,8 @@ class InflacaoSkill(MycroftSkill):
         when = extract_datetime(utt)
 
         self.speak('when', str(when))
+
+        LOG
 
 
 def create_skill():
