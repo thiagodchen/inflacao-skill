@@ -1,6 +1,6 @@
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
-from utils import get_request_json
+from .utils import get_request_json
 
 class InflacaoSkill(MycroftSkill):
 
