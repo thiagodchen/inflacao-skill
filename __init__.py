@@ -1,6 +1,6 @@
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
-from mycroft.util.log import LOG
+from utils import get_request_json
 
 class InflacaoSkill(MycroftSkill):
 
@@ -16,11 +16,22 @@ class InflacaoSkill(MycroftSkill):
         self.speak_dialog('launch')
 
 
-    @intent_handler(IntentBuilder('UltimoIntent').require('ultimo'))
+    @intent_handler(IntentBuilder('UltimoIntent').require('ultimo').require('ipca'))
     def handle_ultimo_intent(self, message):
 
-        LOG.debug('=== entrou no ultimo intent ===')
-        self.speak('The type spoken is ' + type)
+        url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/63'
+
+        response = get_request_json(url)
+        response = response[0]
+
+        value = response['V']
+        date = response['D1N']
+        date = date.split(' ')
+
+        speech_text = ('A última variação do IPCA é de ' + value
+                        + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
+
+        self.speak(speech_text)
 
 def create_skill():
     return InflacaoSkill()
