@@ -1,8 +1,8 @@
-from adapt.intent import IntentBuilder
-from mycroft.skills.core import MycroftSkill, intent_handler, intent_file_handler
-from mycroft.util.parse import extract_datetime
+# from adapt.intent import IntentBuilder
+from mycroft.skills.core import MycroftSkill, intent_file_handler
+# from mycroft.util.parse import extract_datetime
 from .utils import get_request_json
-from mycroft.util.log import LOG
+# from mycroft.util.log import LOG
 
 MONTH = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
                5:'maio',     6:'junho',    7:'julho',    8:'agosto',
@@ -33,12 +33,12 @@ class InflacaoSkill(MycroftSkill):
     # def initialize(self):
     #     self.register_intent_file('convert.intent', self.handle_ultimo_intent)
 
-    @intent_handler(IntentBuilder('LaunchIntent').require('launch'))
+    @intent_file_handler('launch.intent')
     def handle_launch_intent(self, message):
         self.speak_dialog('launch')
 
 
-    @intent_handler(IntentBuilder('UltimoIntent').require('ultimo').require('ipca'))
+    @intent_file_handler('ultimo.intent')
     def handle_ultimo_intent(self, message):
 
         url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/63'
@@ -62,10 +62,6 @@ class InflacaoSkill(MycroftSkill):
         month = message.data.get('month')
         year = message.data.get('year')
         # when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
-
-
-
-
         # LOG.debug('==== entered LOG ====')
         # LOG.debug('datetime' + str(datetime))
         if day == None:
