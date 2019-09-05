@@ -56,7 +56,7 @@ class InflacaoSkill(MycroftSkill):
     @intent_handler(IntentBuilder('MensalIntent').require('ipca'))
     def handle_mensal_intent(self, message):
         utt = message.data.get('utterance').lower()
-        when = extract_datetime(utt) # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
+        when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
 
         datetime = when[0]
 
@@ -65,7 +65,7 @@ class InflacaoSkill(MycroftSkill):
         # LOG.debug('==== entered LOG ====')
         # LOG.debug('datetime' + str(datetime))
 
-        speech_text = utt + date_pt['year'] +  date_pt['month'] +  date_pt['day'] + when[1]
+        speech_text = utt + ' ' + date_pt['year'] +  date_pt['month'] +  date_pt['day'] + ' ' + when[1]
         self.speak(speech_text)
 
 def create_skill():
