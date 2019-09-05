@@ -68,8 +68,14 @@ class InflacaoSkill(MycroftSkill):
 
         # LOG.debug('==== entered LOG ====')
         # LOG.debug('datetime' + str(datetime))
+        if day == None:
+            day = 'xx'
+        if month == None:
+            month = 'xx'
+        if year == None:
+            year = 'xx'
 
-        speech_text = utt + ' ' + day + month+ year
+        speech_text = utt + ' ' + day + '-' + month + '-' + year
         self.speak(speech_text)
 
 def create_skill():
