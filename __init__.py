@@ -124,6 +124,8 @@ class InflacaoSkill(MycroftSkill):
     @intent_file_handler('mensal.intent')
     def handle_mensal_intent(self, message):
         utt = message.data.get('utterance').lower()
+        self.speak(utt)
+
         day = message.data.get('day')
         month = message.data.get('month')
         year = message.data.get('year')
@@ -153,7 +155,6 @@ class InflacaoSkill(MycroftSkill):
 
         speech_text = ('A última variação do IPCA é de ' + value
                         + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
-        speech_text += utt
 
         self.speak(speech_text)
 

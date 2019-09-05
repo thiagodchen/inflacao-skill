@@ -1,4 +1,9 @@
-último
-hoje
-mais recente
-mais atualizado
+{today}
+quero saber o {today} {ipca}
+qual o {today} {ipca}
+qual a variação do {today} {ipca}
+qual a variação do {ipca} {today}
+quanto está o {ipca} {today}
+quanto está {hoje} {ipca}
+quanto está a variação do {hoje} {ipca}
+quanto está a variação do {ipca} {hoje}
