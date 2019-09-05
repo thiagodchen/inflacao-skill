@@ -40,11 +40,12 @@ class InflacaoSkill(MycroftSkill):
         when = extract_datetime(utt) # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
 
         datetime = when[0]
+        datetime = datetime.date
 
         LOG.debug('==== entered LOG ====')
-        LOG.debug('datetime' + datetime)
+        LOG.debug('datetime' + str(datetime))
 
-        self.speak('when', str(when))
+        self.speak('sucesso')
 
 
 
