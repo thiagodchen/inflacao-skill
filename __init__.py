@@ -4,9 +4,75 @@ from mycroft.skills.core import MycroftSkill, intent_file_handler
 from .utils import get_request_json
 # from mycroft.util.log import LOG
 
-MONTH = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
+MONTH_INTTOLIT = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
                5:'maio',     6:'junho',    7:'julho',    8:'agosto',
                9:'setembro', 10:'outubro',  11:'novembro', 12:'dezembro'}
+
+MONTH_LITTONUM = {'janeiro': '01',  'fevereiro': '02', u'março': '03',    'abril': '04',
+               'maio': '05',     'junho': '06',     'julho': '07',     'agosto': '08',
+               'setembro': '09', 'outubro': '10',  'novembro': '11', 'dezembro': '12'}
+
+def literal_to_int(s):
+    num = {
+        "zero":0,
+        "um":1,
+        "dois":2,
+        "três":3,
+        "quatro":4,
+        "cinco":5,
+        "seis":6,
+        "sete":7,
+        "oito":8,
+        "nove":9,
+        "dez":10,
+        "onze":11,
+        "doze":12,
+        "treze":13,
+        "quatorze":14,
+        "quinze":15,
+        "dezesseis":16,
+        "dezessete":17,
+        "dezoito":18,
+        "dezenove":19,
+        "vinte":20,
+        "trinta":30,
+        "quarenta":40,
+        "cinquenta":50,
+        "sessenta":60,
+        "setenta":70,
+        "oitenta":80,
+        "noventa":90,
+        "cem":100,
+        "cento":100,
+        "duzentos":200,
+        "trezentos":300,
+        "quatrocentos":400,
+        "quinhentos":500,
+        "seiscentos":600,
+        "setecentos":700,
+        "oitocentos":800,
+        "novecentos":900
+    }
+
+    thousands = {
+        "mil":1000,
+        "milhão":1000000,
+        "milhões":1000000,
+        "bilhão":1000000000,
+        "bilhões":1000000000
+    }
+
+    res = 0
+    g = 0
+
+    for i in s.split():
+        if i in num:
+            g += num[i]
+        elif i in thousands:
+            res += thousands[i] * (1 if g == 0 else g)
+            g = 0
+    res += g
+    return res
 
 def parse_date(datetime):
     """
@@ -18,7 +84,7 @@ def parse_date(datetime):
 
     dict = {
         'year': str(date.year),
-        'month': MONTH[date.month],
+        'month': MONTH_INTTOLIT[date.month],
         'day': str(date.day)
     }
     return dict
@@ -71,7 +137,24 @@ class InflacaoSkill(MycroftSkill):
         if year == None:
             year = 'xx'
 
-        speech_text = utt + ' ' + day + '-' + month + '-' + year
+        if len(year) != 4:
+            year = literal_to_int(year)
+
+        date = str(year) + MONTH_LITTONUM[month]
+
+        url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/' + date + '/n1/all/v/63'
+
+        response = get_request_json(url)
+        response = response[0]
+
+        value = response['V']
+        date = response['D1N']
+        date = date.split(' ')
+
+        speech_text = ('A última variação do IPCA é de ' + value
+                        + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
+        speech_text += utt
+
         self.speak(speech_text)
 
 def create_skill():
