@@ -46,7 +46,6 @@ class InflacaoSkill(MycroftSkill):
 
         self.speak('when', str(when))
 
-        LOG
 
 
 def create_skill():
