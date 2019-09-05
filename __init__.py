@@ -4,6 +4,25 @@ from mycroft.util.parse import extract_datetime
 from .utils import get_request_json
 from mycroft.util.log import LOG
 
+MONTH = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
+               5:'maio',     6:'junho',    7:'julho',    8:'agosto',
+               9:'setembro', 10:'outubro',  11:'novembro', 12:'dezembro'}
+
+def parse_date(datetime):
+    """
+        Arg:
+            datetime.datetime
+    """
+
+    date = datetime.date()
+
+    dict = {
+        'year': date.year,
+        'month': MONTH[date.month],
+        'day': date.day
+    }
+    return dict
+
 class InflacaoSkill(MycroftSkill):
 
     def __init__(self):
@@ -40,14 +59,14 @@ class InflacaoSkill(MycroftSkill):
         when = extract_datetime(utt) # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
 
         datetime = when[0]
-        datetime = datetime.date
 
-        LOG.debug('==== entered LOG ====')
-        LOG.debug('datetime' + str(datetime))
+        date_pt = parse_date(datetime)
 
-        self.speak('sucesso')
+        # LOG.debug('==== entered LOG ====')
+        # LOG.debug('datetime' + str(datetime))
 
-
+        speech_text = utt + date_pt['year'] +  date_pt['month'] +  date_pt['day'] + when[1]
+        self.speak(speech_text)
 
 def create_skill():
     return InflacaoSkill()
