@@ -14,7 +14,6 @@ class InflacaoSkill(MycroftSkill):
 
     @intent_handler(IntentBuilder('LaunchIntent').require('launch'))
     def handle_launch_intent(self, message):
-        LOG.debug('==== entered LOG ====')
         self.speak_dialog('launch')
 
 
@@ -38,7 +37,12 @@ class InflacaoSkill(MycroftSkill):
     @intent_handler(IntentBuilder('MensalIntent').require('ipca'))
     def handle_mensal_intent(self, message):
         utt = message.data.get('utterance').lower()
-        when = extract_datetime(utt)
+        when = extract_datetime(utt) # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
+
+        datetime = when[0]
+
+        LOG.debug('==== entered LOG ====')
+        LOG.debug('datetime' + datetime)
 
         self.speak('when', str(when))
 
