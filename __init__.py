@@ -17,9 +17,9 @@ def parse_date(datetime):
     date = datetime.date()
 
     dict = {
-        'year': date.year,
+        'year': str(date.year),
         'month': MONTH[date.month],
-        'day': date.day
+        'day': str(date.day)
     }
     return dict
 
