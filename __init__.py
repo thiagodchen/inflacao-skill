@@ -1,5 +1,5 @@
 from adapt.intent import IntentBuilder
-from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.skills.core import MycroftSkill, intent_handler, intent_file_handler
 from mycroft.util.parse import extract_datetime
 from .utils import get_request_json
 from mycroft.util.log import LOG
@@ -22,6 +22,8 @@ def parse_date(datetime):
         'day': str(date.day)
     }
     return dict
+
+
 
 class InflacaoSkill(MycroftSkill):
 
@@ -53,19 +55,21 @@ class InflacaoSkill(MycroftSkill):
 
         self.speak(speech_text)
 
-    @intent_handler(IntentBuilder('MensalIntent').require('ipca'))
+    @intent_file_handler('mensal.intent')
     def handle_mensal_intent(self, message):
         utt = message.data.get('utterance').lower()
-        when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
+        day = message.data.get('day')
+        month = message.data.get('month')
+        year = message.data.get('year')
+        # when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
 
-        datetime = when[0]
 
-        date_pt = parse_date(datetime)
+
 
         # LOG.debug('==== entered LOG ====')
         # LOG.debug('datetime' + str(datetime))
 
-        speech_text = utt + ' ' + date_pt['year'] +  date_pt['month'] +  date_pt['day'] + ' ' + when[1]
+        speech_text = utt + ' ' + day + month+ year
         self.speak(speech_text)
 
 def create_skill():
