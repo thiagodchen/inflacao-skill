@@ -171,25 +171,25 @@ class InflacaoSkill(MycroftSkill):
 
         self.speak(speech_text)
 
-        @intent_file_handler('acumulado.intent')
-        def handle_acumulado_intent(self, message):
-            accumulate_time = message.data.get('accumulate_time')
-            accumulate_code = ACCUMULATE_CODES[ACCUMULATE_SYN[accumulate_time]]
 
-            url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/' + accumulate_code
+    @intent_file_handler('acumulado.intent')
+    def handle_acumulado_intent(self, message):
+        accumulate_time = message.data.get('accumulate_time')
+        accumulate_code = ACCUMULATE_CODES[ACCUMULATE_SYN[accumulate_time]]
 
-            response = get_request_json(url)
-            response = response[0]
+        url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/' + accumulate_code
 
-            value = response['V']
-            date = response['D1N']
-            date = date.split(' ')
+        response = get_request_json(url)
+        response = response[0]
 
-            speechText = 'O IPCA acumulado nos últimos ' + accumulate_time + ' meses até ' + date[0] + ' de ' + date[1] + ' é '
-            speechText += value + ' porcento. ';
+        value = response['V']
+        date = response['D1N']
+        date = date.split(' ')
 
-            self.speak(speech_text)
+        speech_text = 'O IPCA acumulado nos últimos ' + accumulate_time + ' meses até ' + date[0] + ' de ' + date[1] + ' é '
+        speech_text += value + ' porcento. ';
 
+        self.speak(speech_text)
 
 def create_skill():
     return InflacaoSkill()
