@@ -142,8 +142,7 @@ class InflacaoSkill(MycroftSkill):
     @intent_file_handler('mensal.intent')
     def handle_mensal_intent(self, message):
         # TODO: remove
-        utt = message.data.get('utterance').lower()
-        self.speak(utt)
+        # utt = message.data.get('utterance').lower()
 
         month = message.data.get('month')
         year = message.data.get('year')
@@ -167,7 +166,7 @@ class InflacaoSkill(MycroftSkill):
         date = response['D1N']
         date = date.split(' ')
 
-        speech_text = ('A última variação do IPCA é de ' + value
+        speech_text = ('A variação do IPCA é de ' + value
                         + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
 
         self.speak(speech_text)
@@ -175,8 +174,9 @@ class InflacaoSkill(MycroftSkill):
         @intent_file_handler('acumulado.intent')
         def handle_acumulado_intent(self, message):
             accumulate_time = message.data.get('accumulate_time')
+            accumulate_code = ACCUMULATE_CODES[ACCUMULATE_SYN[accumulate_time]]
 
-            url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/' + accumulate_time
+            url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/' + accumulate_code
 
             response = get_request_json(url)
             response = response[0]
@@ -189,8 +189,6 @@ class InflacaoSkill(MycroftSkill):
             speechText += value + ' porcento. ';
 
             self.speak(speech_text)
-
-
 
 
 def create_skill():
