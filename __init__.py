@@ -12,17 +12,17 @@ ACCUMULATE_CODES = {
 }
 
 ACCUMULATE_SYN = {
-    'três':
-    'três meses':
-    'seis':
-    'seis meses':
-    'doze':
-    'doze meses':
-    'trimestral':
-    'semestral':
-    'anual':
-    'um ano': 
-    'no ano':
+    'três': '3',
+    'três meses': '3',
+    'seis': '6',
+    'seis meses': '6',
+    'doze': '12',
+    'doze meses': '12',
+    'trimestral': '3',
+    'semestral': '6',
+    'anual': 'anual',
+    'um ano': 'anual',
+    'no ano': 'anual'
 }
 
 MONTH_INTTOLIT = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
@@ -145,7 +145,6 @@ class InflacaoSkill(MycroftSkill):
         utt = message.data.get('utterance').lower()
         self.speak(utt)
 
-        day = message.data.get('day')
         month = message.data.get('month')
         year = message.data.get('year')
         # when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
