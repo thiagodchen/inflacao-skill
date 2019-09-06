@@ -4,6 +4,27 @@ from mycroft.skills.core import MycroftSkill, intent_file_handler
 from .utils import get_request_json
 # from mycroft.util.log import LOG
 
+ACCUMULATE_CODES = {
+    'anual': '69',
+    '3': '2263',
+    '6': '2264',
+    '12': '2265',
+}
+
+ACCUMULATE_SYN = {
+    'três':
+    'três meses':
+    'seis':
+    'seis meses':
+    'doze':
+    'doze meses':
+    'trimestral':
+    'semestral':
+    'anual':
+    'um ano': 
+    'no ano':
+}
+
 MONTH_INTTOLIT = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
                5:'maio',     6:'junho',    7:'julho',    8:'agosto',
                9:'setembro', 10:'outubro',  11:'novembro', 12:'dezembro'}
@@ -96,9 +117,6 @@ class InflacaoSkill(MycroftSkill):
     def __init__(self):
         super(InflacaoSkill, self).__init__(name='InflacaoSkill')
 
-    # def initialize(self):
-    #     self.register_intent_file('convert.intent', self.handle_ultimo_intent)
-
     @intent_file_handler('launch.intent')
     def handle_launch_intent(self, message):
         self.speak_dialog('launch')
@@ -123,6 +141,7 @@ class InflacaoSkill(MycroftSkill):
 
     @intent_file_handler('mensal.intent')
     def handle_mensal_intent(self, message):
+        # TODO: remove
         utt = message.data.get('utterance').lower()
         self.speak(utt)
 
@@ -132,17 +151,13 @@ class InflacaoSkill(MycroftSkill):
         # when = extract_datetime(utt, lang='pt-br') # https://mycroft-core.readthedocs.io/en/stable/source/mycroft.util.html
         # LOG.debug('==== entered LOG ====')
         # LOG.debug('datetime' + str(datetime))
-        if day == None:
-            day = 'xx'
-        if month == None:
-            month = 'xx'
-        if year == None:
-            year = 'xx'
 
+        if len(month) != 2 and len(month) != 1:
+            month = MONTH_LITTONUM[month]
         if len(year) != 4:
             year = literal_to_int(year)
 
-        date = str(year) + MONTH_LITTONUM[month]
+        date = str(year) + month
 
         url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/' + date + '/n1/all/v/63'
 
@@ -157,6 +172,27 @@ class InflacaoSkill(MycroftSkill):
                         + ' porcento, no período ' + date[0] + ' de ' + date[1] + '.')
 
         self.speak(speech_text)
+
+        @intent_file_handler('acumulado.intent')
+        def handle_acumulado_intent(self, message):
+            accumulate_time = message.data.get('accumulate_time')
+
+            url = 'http://api.sidra.ibge.gov.br/values/h/n/t/1737/p/last/n1/all/v/' + accumulate_time
+
+            response = get_request_json(url)
+            response = response[0]
+
+            value = response['V']
+            date = response['D1N']
+            date = date.split(' ')
+
+            speechText = 'O IPCA acumulado nos últimos ' + accumulate_time + ' meses até ' + date[0] + ' de ' + date[1] + ' é '
+            speechText += value + ' porcento. ';
+
+            self.speak(speech_text)
+
+
+
 
 def create_skill():
     return InflacaoSkill()
