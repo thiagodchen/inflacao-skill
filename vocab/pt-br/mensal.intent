@@ -2,6 +2,8 @@ quero saber a variação mensal de {day} de {month} de {year}
 variação mensal de {day} de {month} de {year}
 ipca de {day} de {month} de {year}
 ipca do ano de {year}
-{month} de {year}
-{month} {year}
+mensal {month} de {year}
+mensal {month} {year}
+variação {month} de {year}
+variação {month} {year}
 Quero saber a variação mensal do ipca de {month} de {year}

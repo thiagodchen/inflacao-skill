@@ -13,3 +13,5 @@ acumulada
 {ipca} acumulado hoje
 qual {ipca} acumulado
 qual o {ipca} acumulado
+{ipca} acumulado {accumulate_time}
+{ipca} acumulada {accumulate_time}
