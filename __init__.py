@@ -22,7 +22,10 @@ ACCUMULATE_SYN = {
     'semestral': '6',
     'anual': 'anual',
     'um ano': 'anual',
-    'no ano': 'anual'
+    'no ano': 'anual',
+    '3': '2263',
+    '6': '2264',
+    '12': '2265',
 }
 
 MONTH_INTTOLIT = {1:'janeiro',  2:'fevereiro', 3:u'março',    4:'abril',
